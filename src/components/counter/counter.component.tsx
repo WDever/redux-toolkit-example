@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Dispatch } from 'redux';
 import styled from 'styled-components';
-import { AppState } from 'store';
-import counter, { CounterModel, counterActions } from 'store/counter';
-
-const { useState } = React;
-const { increment, decrement } = counter.actions;
+import { useCounterActions, useCounterStore } from 'hooks/counter';
+import { useInput } from 'utils/hooks';
 
 const Wrapper = styled.section<{ color: string }>`
   width: 100%;
@@ -20,29 +15,21 @@ const Typography = styled.div<{ color: string }>`
   font-size: 2rem;
 `;
 
-export default function Counter() {
-  const { count, color } = useSelector<AppState, CounterModel>(
-    state => state.counter,
-  );
-  const dispatch: Dispatch<counterActions> = useDispatch();
+export default function CounterComponent() {
+  const { color, count } = useCounterStore();
+  const { increment, decrement } = useCounterActions();
 
-  const [input, setInput] = useState('');
-
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) =>
-    setInput(e.currentTarget.value);
-
-  const dispatchIncrement = () => dispatch(increment());
-  const dispatchDecrement = () => dispatch(decrement());
+  const [input, setInput] = useInput('');
 
   return (
     <Wrapper color={color}>
-      <input value={input} onChange={handleChange} />
+      <input value={input} onChange={setInput} />
       <Typography color={color}>{input}</Typography>
       <div>{count}</div>
-      <button type="button" onClick={dispatchIncrement}>
+      <button type="button" onClick={increment}>
         +
       </button>
-      <button type="button" onClick={dispatchDecrement}>
+      <button type="button" onClick={decrement}>
         -
       </button>
     </Wrapper>

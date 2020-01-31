@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Counter from './counter';
-import Palette from './palette/palette.component';
+import CounterPage from 'pages/counter';
+import TodosPage from 'pages/todos';
 
 const Wrapper = styled.main`
   width: 100%;
@@ -11,8 +11,8 @@ const Wrapper = styled.main`
 const App: React.FC = () => {
   return (
     <Wrapper>
-      <Palette />
-      <Counter />
+      <CounterPage />
+      <TodosPage />
     </Wrapper>
   );
 };

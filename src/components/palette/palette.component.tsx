@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { counter, counterActions, CounterModel, AppState } from 'store';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch } from 'redux';
-
-const { selectColor } = counter.actions;
+import { useCounterStore, useCounterActions } from 'hooks/counter';
 
 interface ColorsType {
   pk: number;
@@ -40,21 +36,17 @@ const Color = styled.div<{ bgColor: string; selectedColor: string }>`
     bgColor === selectedColor ? '2px solid Grey' : '2px solid #ffffff'};
 `;
 
-export default function Palette() {
-  const { color } = useSelector<AppState, CounterModel>(state => state.counter);
-  const dispatch: Dispatch<counterActions> = useDispatch();
+export default function PaletteComponent() {
+  const { color } = useCounterStore();
+  const { selectColor } = useCounterActions();
 
   const colorList = colors.map(item => (
     <Color
       key={item.pk}
       bgColor={item.color}
       selectedColor={color}
-      onClick={() => dispatch(selectColor({ color: item.color }))}
+      onClick={() => selectColor(item.color)}
     />
   ));
-  return (
-    <Wrapper>
-      {colorList}
-    </Wrapper>
-  );
+  return <Wrapper>{colorList}</Wrapper>;
 }
